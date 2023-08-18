@@ -1,8 +1,8 @@
 import cities from "../cities.js";
 import City from '../config/Models/City.js';
 const citiesController = {
-  getAllCities: (req, res, next) => {
-    res.json({
+  getAllCities: (request, response, next) => {
+    response.json({
       response: cities,
       succes: true,
       error: null
@@ -12,9 +12,9 @@ const citiesController = {
   getOneCitie: (req, res, next) => {
     console.log(req.params)
     const { name } = req.params
-    const citie = cities.find(citie => citie.name == name)
+    const city = cities.find(city => city.name == name)
     res.json({
-      response: citie,
+      response: city,
       succes: true,
       error: null
 
@@ -28,21 +28,16 @@ const citiesController = {
     console.log(req.body);
 
 try{
-    Event.create(req.body)
+    City.create(req.body)
 } catch(error){
 console.log(error)
 }
 
-
-
     res.json({
-      // response: citie,
+      response: city,
       success: true,
       error: null
-
     })
-
-
   }
 
 }

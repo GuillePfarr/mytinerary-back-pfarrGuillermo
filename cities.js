@@ -1,13 +1,21 @@
 const cities = [
+
 {
-date : '2023-09-15',
-name:"Slide",
-place: "Toronto"},
+ name: 'Toronto',
+description: 'Sart',
+currency: 'CanDollar',
+lang: 'FrenchEnglish',
+time: 'GTMp5',
+},
+
 {
-date : '2023-10-25',
-name:"t4oMDpmkNf10L9Qu",
-place: "MongoDB"
+ name: 'MongoDB',
+description: 't4oMDpmkNf10L9Qu',
+currency: 'Crypto',
+lang: 'universal',
+time: 'infinit',
 }
+
 ];
 
 

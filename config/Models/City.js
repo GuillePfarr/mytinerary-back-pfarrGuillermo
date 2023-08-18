@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const citySchema = Schema({
  name: {type: String, required: true},
@@ -12,7 +12,7 @@ time: {type: String, required: true},
 timestamps: true
 }
 )
-const City = model('cities', citySchema)
+const City = model('city', citySchema)
 
 export default City
 
