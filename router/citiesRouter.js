@@ -4,7 +4,7 @@ const citiesRouter = Router()
 const {getAllCities, getOneCity, createOneCity} = citiesController
 
 citiesRouter.get('/', getAllCities)
-citiesRouter.post('/', create)
-citiesRouter.get('/:nombre', getOneCity)
+citiesRouter.post('/', createOneCity)
+citiesRouter.get('/:name', getOneCity)
 
 export default citiesRouter

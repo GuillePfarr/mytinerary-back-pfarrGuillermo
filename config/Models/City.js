@@ -12,7 +12,7 @@ time: {type: String, required: true},
 timestamps: true
 }
 )
-const City = model('city', citySchema)
+const City = model('cities', citySchema)
 
 export default City
 

@@ -22,7 +22,7 @@ const citiesController = {
 
   },
 
-  createOneCity: (req, res, next) => {
+  createOneCity:  (req, res, next) => {
     // const newCity = new City()
       City.create(req.body)
     console.log(req.body);
