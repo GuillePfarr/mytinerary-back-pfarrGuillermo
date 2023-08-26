@@ -2,6 +2,8 @@ import cities from "../cities.js";
 import City from '../config/Models/City.js';
 const citiesController = {
   getAllCities: (request, response, next) => {
+
+
     response.json({
       response: cities,
       succes: true,
@@ -34,7 +36,7 @@ console.log(error)
 }
 
     res.json({
-      response: city,
+      // response: city,
       success: true,
       error: null
     })
