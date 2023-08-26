@@ -2,7 +2,7 @@ import cities from "../cities.js";
 import City from '../config/Models/City.js';
 const citiesController = {
   getAllCities: async (request, response, next) => {
-    const allCities = await City.find({ name:'Toronto'})
+    const allCities = await City.find()
 
     response.json({
       response: cities,
