@@ -1,8 +1,8 @@
 import cities from "../cities.js";
 import City from '../config/Models/City.js';
 const citiesController = {
-  getAllCities: (request, response, next) => {
-
+  getAllCities: async (request, response, next) => {
+    const allCities = await City.find({ name:'Toronto'})
 
     response.json({
       response: cities,
@@ -24,16 +24,16 @@ const citiesController = {
 
   },
 
-  createOneCity:  (req, res, next) => {
+  createOneCity: (req, res, next) => {
     // const newCity = new City()
-      City.create(req.body)
+    City.create(req.body)
     console.log(req.body);
 
-try{
-    City.create(req.body)
-} catch(error){
-console.log(error)
-}
+    try {
+      City.create(req.body)
+    } catch (error) {
+      console.log(error)
+    }
 
     res.json({
       // response: city,
