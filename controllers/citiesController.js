@@ -1,4 +1,5 @@
 
+import cities from '../cities.js';
 import City from '../config/Models/City.js';
 const citiesController = {
   getAllCities: async (request, response, next) => {
@@ -46,12 +47,56 @@ const citiesController = {
 
     } catch (error) {
       console.log(error)
-      ///next (error)
+
+    }
+  },
+
+
+
+  updateOneCity: async (req, res, next) => {
+    const { id } = req.params
+    let cities;
+    let error = null;
+    let succes = true;
+    try {
+      const city = await City.findOneAndUpdate({ _id: id }, req.body, { new: true })
+      res.json({
+        response: City,
+        success: true,
+        error: null
+      })
+    } catch (error) {
+      succes = false;
+      error = err;
+      next(err)
+
     }
 
 
-  }
 
+
+  },
+
+  deleteOneCity: async (req, res, next) => {
+
+    const { id } = req.params
+    let cities;
+    let error = null;
+    let succes = true;
+    try {
+      const city = await City.findOneAndDelete({ _id: id })
+      res.json({
+        response: City,
+        success: true,
+        error: null
+      })
+    } catch (error) {
+      succes = false;
+      error = err;
+      next(err)
+
+    }
+  },
 }
 
 export default citiesController;
