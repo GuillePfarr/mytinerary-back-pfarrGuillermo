@@ -1,9 +1,9 @@
 const cities = [
 
 {
- name: 'Toronto',
+ name: 'Zermatalons',
 description: 'Sart',
-currency: 'CanDollar',
+currency: 'CanDol',
 lang: 'FrenchEnglish',
 time: 'GTMp5',
 },

@@ -1,20 +1,20 @@
-import cities from "../cities.js";
+
 import City from '../config/Models/City.js';
 const citiesController = {
   getAllCities: async (request, response, next) => {
     const allCities = await City.find()
 
     response.json({
-      response: cities,
+      response: allCities,
       succes: true,
       error: null
     })
   },
 
-  getOneCitie: (req, res, next) => {
+  getOneCity: async (req, res, next) => {
     console.log(req.params)
-    const { name } = req.params
-    const city = cities.find(city => city.name == name)
+    const { id } = req.params
+    const city = await City.findById(id)
     res.json({
       response: city,
       succes: true,
@@ -24,22 +24,22 @@ const citiesController = {
 
   },
 
-  createOneCity: (req, res, next) => {
-    // const newCity = new City()
-    City.create(req.body)
-    console.log(req.body);
+  createOneCity: async (req, res, next) => {
 
     try {
-      City.create(req.body)
+      const city = await City.create(req.body)
+      res.json({
+        response: city,
+        success: true,
+        error: null
+      })
+
     } catch (error) {
       console.log(error)
+///next (error)
     }
 
-    res.json({
-      // response: city,
-      success: true,
-      error: null
-    })
+
   }
 
 }
