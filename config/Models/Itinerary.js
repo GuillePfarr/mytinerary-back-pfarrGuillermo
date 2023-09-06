@@ -12,3 +12,5 @@ const itinerarySchema = Schema({
 const Itinerary = model('itineraries', itinerarySchema);
 
 export default Itinerary;
+
+

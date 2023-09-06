@@ -1,5 +1,5 @@
 
-import itinerariesController from '../controllers/itinerariesController';
+
 import Itinerary from '../config/Models/Itinerary.js';
 
 const itinerariesController = {
