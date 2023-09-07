@@ -1,103 +1,210 @@
 
 
+// import Itinerary from '../config/Models/Itinerary.js';
+
+// const itinerariesController = {
+//   getAllItineraries: async (request, response, next) => {
+//     try {
+//       const allItineraries= await Itinerary.find()
+
+//       response.json({
+//         response: allItineraries,
+//         success: true,
+//         error: null
+//       })
+//     }
+//     catch (error) {
+//       console.log(error)
+     
+//     }
+//   },
+
+//   getOneItinerary: async (req, res, next) => {
+
+//     try {
+//       console.log(req.params)
+//       const { id } = req.params
+//       const itinerary = await Itinerary.findById(id)
+//       res.json({
+//         response: itinerary,
+//         succes: true,
+//         error: null
+//       })
+//     } catch (error) {
+//       console.log(error)
+      
+//     }
+//   },
+
+//   createOneItinerary: async (req, res, next) => {
+
+//     try {
+//       const itinerary = await Itinerary.create(req.body)
+//       res.json({
+//         response: itinerary,
+//         success: true,
+//         error: null
+//       })
+
+//     } catch (error) {
+//       console.log(error)
+
+//     }
+//   },
+
+
+
+//   updateOneItinerary: async (req, res, next) => {
+//     const { id } = req.params
+   
+//     let error = null;
+//     let success = true;
+//     try {
+//       const itinerary = await Itinerary.findOneAndUpdate({ _id: id }, req.body, { new: true })
+//       res.json({
+//         response: itinerary,
+//         success: true,
+//         error: null
+//       })
+//     } catch (error) {
+//       success = false;
+//       error = err;
+//       next(err)
+
+//     }
+
+
+
+
+//   },
+
+//   deleteOneItinerary: async (req, res, next) => {
+
+//     const { id } = req.params
+    
+//     let error = null;
+//     let success = true;
+//     try {
+//       const deleteItinerary = await Itinerary.findOneAndDelete({ _id: id })
+//       res.json({
+//         response: deleteItinerary,
+//         success: true,
+//         error: null
+//       })
+//     } catch (error) {
+//       success = false;
+//       error = err;
+//       next(err)
+
+//     }
+//   },
+// }
+
+// export default itinerariesController;
+
+
 import Itinerary from '../config/Models/Itinerary.js';
 
 const itinerariesController = {
   getAllItineraries: async (request, response, next) => {
     try {
-      const allItineraries= await Itinerary.find()
+      const allItineraries = await Itinerary.find();
 
       response.json({
         response: allItineraries,
         success: true,
-        error: null
-      })
-    }
-    catch (error) {
-      console.log(error)
-      ///next (error)
+        error: null,
+      });
+    } catch (error) {
+      console.log(error);
+      // next(error)
     }
   },
 
   getOneItinerary: async (req, res, next) => {
-
     try {
-      console.log(req.params)
-      const { id } = req.params
-      const itinerary = await Itinerary.findById(id)
+      console.log(req.params);
+      const { id } = req.params;
+      const itinerary = await Itinerary.findById(id);
       res.json({
         response: itinerary,
-        succes: true,
-        error: null
-      })
+        success: true,
+        error: null,
+      });
     } catch (error) {
-      console.log(error)
-      ///next (error)
+      console.log(error);
+      // next(error)
     }
   },
 
   createOneItinerary: async (req, res, next) => {
-
     try {
-      const itinerary = await Itinerary.create(req.body)
+      const itinerary = await Itinerary.create(req.body);
       res.json({
         response: itinerary,
         success: true,
-        error: null
-      })
-
+        error: null,
+      });
     } catch (error) {
-      console.log(error)
-
+      console.log(error);
     }
   },
 
-
-
   updateOneItinerary: async (req, res, next) => {
-    const { id } = req.params
-    // let itineraries;
+    const { id } = req.params;
     let error = null;
     let success = true;
     try {
-      const itinerary = await Itinerary.findOneAndUpdate({ _id: id }, req.body, { new: true })
+      const itinerary = await Itinerary.findOneAndUpdate(
+        { _id: id },
+        req.body,
+        { new: true }
+      );
       res.json({
-        response: itinerary,
+        response: Itinerary,
         success: true,
-        error: null
-      })
+        error: null,
+      });
     } catch (error) {
       success = false;
       error = err;
-      next(err)
-
+      next(err);
     }
-
-
-
-
   },
 
   deleteOneItinerary: async (req, res, next) => {
-
-    const { id } = req.params
-    
+    const { id } = req.params;
+    let itineraries;
     let error = null;
     let success = true;
     try {
-      const deleteItinerary = await Itinerary.findOneAndDelete({ _id: id })
+      const Itinerary = await Itinerary.findOneAndDelete({ _id: id });
       res.json({
-        response: deleteItinerary,
+        response: Itinerary,
         success: true,
-        error: null
-      })
+        error: null,
+      });
     } catch (error) {
       success = false;
       error = err;
-      next(err)
-
+      next(err);
     }
   },
-}
+
+  getItinerariesByCity: async (req, res, next) => {
+    const { cityId } = req.params;
+    try {
+      const itineraries = await Itinerary.find({ city: cityId });
+      res.json({
+        response: itineraries,
+        success: true,
+        error: null,
+      });
+    } catch (error) {
+      console.log(error);
+      // next(error)
+    }
+  },
+};
 
 export default itinerariesController;
