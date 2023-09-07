@@ -1,5 +1,5 @@
 
-import itinerariesController from '../controllers/itinerariesController';
+
 import Itinerary from '../config/Models/Itinerary.js';
 
 const itinerariesController = {
@@ -9,7 +9,7 @@ const itinerariesController = {
 
       response.json({
         response: allItineraries,
-        succes: true,
+        success: true,
         error: null
       })
     }
@@ -62,7 +62,7 @@ const itinerariesController = {
     try {
       const itinerary = await Itinerary.findOneAndUpdate({ _id: id }, req.body, { new: true })
       res.json({
-        response: Itinerary,
+        response: itinerary,
         success: true,
         error: null
       })
@@ -81,18 +81,18 @@ const itinerariesController = {
   deleteOneItinerary: async (req, res, next) => {
 
     const { id } = req.params
-    let itineraries;
+    
     let error = null;
-    let succes = true;
+    let success = true;
     try {
-      const Itinerary = await Itinerary.findOneAndDelete({ _id: id })
+      const deleteItinerary = await Itinerary.findOneAndDelete({ _id: id })
       res.json({
-        response: Itinerary,
+        response: deleteItinerary,
         success: true,
         error: null
       })
     } catch (error) {
-      succes = false;
+      success = false;
       error = err;
       next(err)
 
