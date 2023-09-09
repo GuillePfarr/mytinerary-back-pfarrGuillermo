@@ -6,7 +6,7 @@ import itinerariesRouter from './itinerariesRouter.js';
 const indexRouter = Router()
 const {getAllCities, getOneCitie} = citiesController
 
-indexRouter.get('/', (request, response, next)=>{
+indexRouter.get('/', (request, response, )=>{
 
   response.send('Bienvenido a mi servidor en /api')
 })
@@ -14,7 +14,7 @@ indexRouter.get('/', (request, response, next)=>{
 
 
 indexRouter.use('/cities', citiesRouter)
-// indexRouter.get('/cities/one', getOneCitie)
+
 indexRouter.use('/itineraries' , itinerariesRouter)
 
 export default indexRouter;
