@@ -5,9 +5,11 @@ const itinerarySchema = Schema({
     user_image: { type: String, required: true },
     price: { type: Number, required: true },
     likes: { type: Number, required: true },
+    hashtag: { type: Array, required: true },
     duration: { type: Number, required: true },
+
     city: { type: Schema.Types.ObjectId, ref: 'City', required: true },
-   
+
 });
 
 const Itinerary = model('itineraries', itinerarySchema);
