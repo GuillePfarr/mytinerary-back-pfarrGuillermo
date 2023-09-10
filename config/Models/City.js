@@ -16,6 +16,6 @@ const citySchema = Schema({
 )
 const City = model('cities', citySchema)
 
-export default City
+export default City 
 
 
