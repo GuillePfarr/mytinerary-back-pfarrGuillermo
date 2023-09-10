@@ -7,7 +7,7 @@ const citySchema = Schema({
     currency: { type: String, required: true },
     lang: { type: String, required: true },
     time: { type: String, required: true },
-    image: { type: String, required: false },
+    image: { type: String, required: false }, 
 },
 
     {
