@@ -1,4 +1,4 @@
-import User from '../Models/User.js'
+import User from "../config/Models/user.js";
 import bcrypt from 'bcryptjs'
 
 export const signUp = async (req, res) => {
@@ -28,10 +28,3 @@ export const signIn = () => {
 
 }
 
-const authController = {
-
-    signIn() {
-
-    }
-
-}
