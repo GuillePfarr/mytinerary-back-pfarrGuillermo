@@ -1,7 +1,6 @@
 import User from "../config/Models/user.js";
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-
 export const signUp = async (req, res) => {
 
     try {
@@ -16,14 +15,13 @@ export const signUp = async (req, res) => {
         const passwordHash = bcrypt.hashSync(password, 10)
 
         const newObj = { ...req.body }
-
         newObj.password = passwordHash
 
         const newUser = await User.create(newObj)
 
         const userResponse = { email: newUser.email, image: newUser.image, name: newUser.name, _id: newUser._id }
 
-        const token = jwt.sign({ name: newUser.name }, "Saramago#456*", { expiresIn: '1h' })
+        const token = jwt.sign({ name: newUser.name }, "Aldi$Berliner*", { expiresIn: '1h' })
 
         return res.status(201).json({ success: true, user: userResponse, token: token })
 
@@ -50,7 +48,11 @@ export const signIn = async (req, res) => {
             return res.json({ success: false, error: " Email o contrasena incorrectos" })
         }
 
-        return res.status(200).json({ success: true, user: userInDB })
+        const userResponse = { email: userInDB.email, image: userInDB.image, name: userInDB.name, _id: userInDB._id }
+
+        const token = jwt.sign({ name: userInDB.name }, "Aldi$Berliner*")
+
+        return res.status(200).json({ success: true, user: userResponse, token: token })
 
     } catch (error) {
 
