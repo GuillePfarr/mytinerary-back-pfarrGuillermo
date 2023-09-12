@@ -19,9 +19,13 @@
   },
   "homepage": "https://github.com/GuillePfarr/mytinerary-back-pfarrGuillermo#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "mongoose": "^7.4.3"
+    "joi": "^17.10.1",
+    "mongoose": "^7.4.3",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1"
   }
 }
