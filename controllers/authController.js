@@ -61,4 +61,7 @@ export const signIn = async (req, res) => {
 
 }
 
-
+export const signInToken = ( req, res ) => {
+const userResponse = { email: req.userInDB.email, image: req.userInDB.image, name: req.userInDB.name, _id: req.userInDB._id }
+res.status(200).json( {succes: true , user : userResponse})
+}

@@ -1,0 +1,26 @@
+import passport from "passport";
+import { Strategy, ExtractJwt } from "passport-jwt";
+import User from "../Models/user.js";
+
+const options = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: "Aldi$Berliner*"
+
+}
+const fn = async (jwt_payload, done) => {
+    try {
+        const user = await User.findOne({ email: jwt_payload.email })
+
+        if (user) {
+            next(null, false)
+
+        }
+        next(null, user)
+    } catch (err) {
+        next(err, false)
+    }
+}
+
+
+
+  export default passport.use(new Strategy(options, fn))
