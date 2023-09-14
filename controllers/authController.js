@@ -50,7 +50,7 @@ export const signIn = async (req, res) => {
 
         const userResponse = { email: userInDB.email, image: userInDB.image, name: userInDB.name, _id: userInDB._id }
 
-        const token = jwt.sign({ name: userInDB.name }, "Aldi$Berliner*")
+        const token = jwt.sign({ name: userInDB.name, email: userInDB.email }, "Aldi$Berliner*")
 
         return res.status(200).json({ success: true, user: userResponse, token: token })
 
@@ -62,6 +62,8 @@ export const signIn = async (req, res) => {
 }
 
 export const signInToken = ( req, res ) => {
-const userResponse = { email: req.userInDB.email, image: req.userInDB.image, name: req.userInDB.name, _id: req.userInDB._id }
+
+
+const userResponse = { email: req.user.email, image: req.user.image, name: req.user.name, _id: req.user._id }
 res.status(200).json( {success: true , user : userResponse})
 }

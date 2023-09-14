@@ -11,11 +11,12 @@ const fn = async (jwt_payload, done) => {
     try {
         const user = await User.findOne({ email: jwt_payload.email })
 
-        if (user) {
-            next(null, false)
+        if (!user) {
+            done(null, false)
 
         }
-        next(null, user)
+console.log(user)
+        done(null, user)
     } catch (err) {
         next(err, false)
     }
