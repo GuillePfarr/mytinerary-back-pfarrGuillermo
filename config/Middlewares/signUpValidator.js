@@ -13,7 +13,7 @@ name: joi.string().min(2).max(25).required().messages({
 
 image : joi.string().required().uri().required(),
 email : joi.string().required().email().required(),
-password : joi.string().min(8).max(20).required(),
+password : joi.string().min(6).max(40).required(),
 country : joi.string().min(2).max(35),
 })
 
