@@ -22,4 +22,4 @@ const vanguardSchema = new mongoose.Schema({
 )
 const Vanguard = model('vanguards', vanguardSchema)
 
-export default Vanguard
+export default Vanguard;
