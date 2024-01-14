@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const vanguardSchema = Schema({
+const vanguardSchema = new mongoose.Schema({
     tempInt1: { type: Number, required: true },
     tempInt2: { type: Number, required: true },
     tempExt: { type: Number, required: true },
