@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const citySchema = Schema({
+const vanguardSchema = Schema({
     tempInt1: { type: Number, required: true },
     tempInt2: { type: Number, required: true },
     tempExt: { type: Number, required: true },
@@ -20,6 +20,6 @@ const citySchema = Schema({
         timestamps: true
     }
 )
-const City = model('vanguards', citySchema)
+const Vanguard = model('vanguards', vanguardSchemaSchema)
 
 export default Vanguard
