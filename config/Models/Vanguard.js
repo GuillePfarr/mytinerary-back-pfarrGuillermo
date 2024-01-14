@@ -20,6 +20,6 @@ const vanguardSchema = Schema({
         timestamps: true
     }
 )
-const Vanguard = model('vanguards', vanguardSchemaSchema)
+const Vanguard = model('vanguards', vanguardSchema)
 
 export default Vanguard
