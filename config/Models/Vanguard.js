@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema } from "mongoose";
 
 const vanguardSchema = new mongoose.Schema({
     tempInt1: { type: Number, required: true },
