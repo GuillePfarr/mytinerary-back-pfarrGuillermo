@@ -1,6 +1,6 @@
 
 import Vanguard from '../config/Models/Vanguard.js';
-const vanguardControllerController = {
+const vanguardController = {
   getAllVanguard: async (request, response, next) => {
     try {
       const allVanguard = await Vanguard.find()

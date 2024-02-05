@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import vanguardControllerController from '../controllers/vanguardController.js';
+import vanguardController from '../controllers/vanguardController.js';
 const vanguardRouter = Router()
 const {getAllVanguard, getOneVanguard, createOneVanguard, updateOneVanguard, deleteOneVanguard} = vanguardController
 
