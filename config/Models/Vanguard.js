@@ -13,7 +13,7 @@ const vanguardSchema =   Schema({
     // lowerLimit1: { type: Number, required: true },
     // lowerLimit2: { type: Number, required: true },
     
-    // date: { type: Date, required: true }
+    date: { type: Date, required: true }
 },
 
     {
