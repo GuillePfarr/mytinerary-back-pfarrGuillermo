@@ -3,6 +3,7 @@ import { Schema, model } from "mongoose";
 const vanguardSchema =   Schema({
     tempInt1: { type: Number, required: true },
     tempInt2: { type: Number, required: true },
+    humyInt1: { type: Number, required: true },
     // maxTempReg: { type: Number, required: true },
     // minTempReg: { type: Number, required: true },
     // maxTempDateHour: { type: Date, required: true },
