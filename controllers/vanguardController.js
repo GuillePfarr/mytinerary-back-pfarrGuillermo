@@ -99,11 +99,12 @@ const vanguardController = {
 
 
  
- updateMinTempInt1Reg: async (newTemperature) => {
+ updateMinTempInt1Reg: async () => {
   try {
     // Encuentra el objeto con el id específico
     const targetTempsEntry = await Vanguard.findOne({ _id: '65e19f1ad57c4b0469da4d0a' });
-console.log('Objeto encontrado:', targetTempsEntry ? targetTempsEntry.toObject() : null);
+
+    console.log('Objeto encontrado:', targetTempsEntry ? targetTempsEntry.toObject() : null);
 
     // Maneja el caso en que no se encuentre el objeto
     if (!targetTempsEntry) {
@@ -111,22 +112,19 @@ console.log('Objeto encontrado:', targetTempsEntry ? targetTempsEntry.toObject()
       return;
     }
 
-    console.log('Objeto encontrado:', targetTempsEntry.toObject());
+    console.log('Actualizando minTempInt1Reg a -9');
+    targetTempsEntry.minTempInt1Reg = -9;
+    // También actualiza la fecha si es necesario
+    targetTempsEntry.date = new Date();  // Puedes ajustar esto según tu lógica
+    await targetTempsEntry.save();
+    
+    console.log('minTempInt1Reg actualizado correctamente.');
 
-    // Compara y actualiza si es necesario
-    if (newTemperature < targetTempsEntry.minTempInt1Reg || targetTempsEntry.minTempInt1Reg === undefined) {
-      console.log('Actualizando minTempInt1Reg:', newTemperature);
-      targetTempsEntry.minTempInt1Reg = newTemperature;
-      // También actualiza la fecha si es necesario
-      targetTempsEntry.date = new Date();  // Puedes ajustar esto según tu lógica
-      await targetTempsEntry.save();
-    } else {
-      console.log('No es necesario actualizar minTempInt1Reg.');
-    }
   } catch (error) {
     console.error('Error al actualizar minTempInt1Reg:', error);
   }
 },
+
 
 
 
