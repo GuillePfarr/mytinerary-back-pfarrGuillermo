@@ -99,25 +99,7 @@ const vanguardController = {
 
 
  
- updateMinTempInt1Reg: async (req, res, next) => {
-    try {
-      const result = await Vanguard.updateOne(
-        { _id: '65e19f1ad57c4b0469da4d0a' },
-        { $set: { minTempInt1Reg: -9, date: new Date() } }
-      );
-
-      if (result.nModified > 0) {
-        console.log('minTempInt1Reg actualizado correctamente.');
-        res.json({ success: true, message: 'minTempInt1Reg actualizado correctamente.' });
-      } else {
-        console.log('minTempInt1Reg no se actualizó.');
-        res.json({ success: false, message: 'minTempInt1Reg no se actualizó.' });
-      }
-    } catch (error) {
-      console.error('Error al actualizar minTempInt1Reg:', error);
-      res.status(500).json({ success: false, message: 'Error al actualizar minTempInt1Reg.' });
-    }
-  },
+ 
 };
 
 
