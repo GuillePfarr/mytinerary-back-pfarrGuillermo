@@ -103,7 +103,8 @@ const vanguardController = {
   try {
     // Encuentra el objeto con el id específico
     const targetTempsEntry = await Vanguard.findOne({ _id: '65e19f1ad57c4b0469da4d0a' });
-console.log(targetTempsEntry);
+console.log('Objeto encontrado:', targetTempsEntry ? targetTempsEntry.toObject() : null);
+
     // Maneja el caso en que no se encuentre el objeto
     if (!targetTempsEntry) {
       console.error('No se encontró el objeto con el id específico.');
