@@ -101,36 +101,22 @@ const vanguardController = {
  
 updateMinTempInt1Reg: async () => {
   try {
-    // Encuentra el objeto con el id específico
-    const targetTempsEntry = await Vanguard.findOne({ _id: '65e19f1ad57c4b0469da4d0a' });
+    const result = await Vanguard.updateOne(
+      { _id: '65e19f1ad57c4b0469da4d0a' },
+      { $set: { minTempInt1Reg: -9, date: new Date() } }
+    );
 
-    console.log('Objeto encontrado:', targetTempsEntry ? targetTempsEntry.toObject() : null);
-
-    // Maneja el caso en que no se encuentre el objeto
-    if (!targetTempsEntry) {
-      console.error('No se encontró el objeto con el id específico.');
-      return;
+    if (result.nModified > 0) {
+      console.log('minTempInt1Reg actualizado correctamente.');
+    } else {
+      console.log('minTempInt1Reg no se actualizó.');
     }
-
-    // Crea una instancia de Mongoose para asegurarte de que sea un documento Mongoose
-    const targetTempsDocument = new Vanguard(targetTempsEntry);
-
-    // Actualiza directamente el valor de minTempInt1Reg
-    console.log('Actualizando minTempInt1Reg a -9');
-    targetTempsDocument.minTempInt1Reg = -9;
-
-    // También actualiza la fecha si es necesario
-    targetTempsDocument.date = new Date();  // Puedes ajustar esto según tu lógica
-
-    // Guarda el documento
-    await targetTempsDocument.save();
-
-    console.log('minTempInt1Reg actualizado correctamente.');
 
   } catch (error) {
     console.error('Error al actualizar minTempInt1Reg:', error);
   }
 },
+
 
 
 
