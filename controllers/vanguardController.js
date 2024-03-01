@@ -99,30 +99,34 @@ const vanguardController = {
 
 
  
-  updateMinTempInt1Reg: async (newTemperature) => {
-    try {
-      // Encuentra el objeto con el id específico
-      const targetTempsEntry = await Vanguard.findOne({ _id: '65e19f1ad57c4b0469da4d0a' });
+ updateMinTempInt1Reg: async (newTemperature) => {
+  try {
+    // Encuentra el objeto con el id específico
+    const targetTempsEntry = await Vanguard.findOne({ _id: '65e19f1ad57c4b0469da4d0a' });
 
-      // Maneja el caso en que no se encuentre el objeto
-      if (!targetTempsEntry) {
-        console.error('No se encontró el objeto con el id específico.');
-        return;
-      }
-
-console.log('Estado actual del objeto antes de la actualización:', targetTempsEntry);
-
-      // Compara y actualiza si es necesario
-      if (newTemperature < targetTempsEntry.minTempInt1Reg || targetTempsEntry.minTempInt1Reg === undefined) {
-        targetTempsEntry.minTempInt1Reg = newTemperature;
-        // También actualiza la fecha si es necesario
-        targetTempsEntry.date = new Date();  // Puedes ajustar esto según tu lógica
-        await targetTempsEntry.save();
-      }
-    } catch (error) {
-      console.error('Error al actualizar minTempInt1Reg:', error);
+    // Maneja el caso en que no se encuentre el objeto
+    if (!targetTempsEntry) {
+      console.error('No se encontró el objeto con el id específico.');
+      return;
     }
-  },
+
+    console.log('Objeto encontrado:', targetTempsEntry.toObject());
+
+    // Compara y actualiza si es necesario
+    if (newTemperature < targetTempsEntry.minTempInt1Reg || targetTempsEntry.minTempInt1Reg === undefined) {
+      console.log('Actualizando minTempInt1Reg:', newTemperature);
+      targetTempsEntry.minTempInt1Reg = newTemperature;
+      // También actualiza la fecha si es necesario
+      targetTempsEntry.date = new Date();  // Puedes ajustar esto según tu lógica
+      await targetTempsEntry.save();
+    } else {
+      console.log('No es necesario actualizar minTempInt1Reg.');
+    }
+  } catch (error) {
+    console.error('Error al actualizar minTempInt1Reg:', error);
+  }
+},
+
 
 
 
