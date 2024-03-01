@@ -98,6 +98,7 @@ const vanguardController = {
   },
 
 
+ 
   updateMinTempInt1Reg: async (newTemperature) => {
     try {
       // Encuentra el objeto con el id específico
@@ -110,7 +111,7 @@ const vanguardController = {
       }
 
       // Compara y actualiza si es necesario
-      if (newTemperature < targetTempsEntry.minTempInt1Reg) {
+      if (newTemperature < targetTempsEntry.minTempInt1Reg || targetTempsEntry.minTempInt1Reg === undefined) {
         targetTempsEntry.minTempInt1Reg = newTemperature;
         // También actualiza la fecha si es necesario
         targetTempsEntry.date = new Date();  // Puedes ajustar esto según tu lógica
