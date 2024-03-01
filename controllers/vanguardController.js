@@ -110,6 +110,8 @@ const vanguardController = {
         return;
       }
 
+console.log('Estado actual del objeto antes de la actualización:', targetTempsEntry);
+
       // Compara y actualiza si es necesario
       if (newTemperature < targetTempsEntry.minTempInt1Reg || targetTempsEntry.minTempInt1Reg === undefined) {
         targetTempsEntry.minTempInt1Reg = newTemperature;
