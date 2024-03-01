@@ -112,15 +112,18 @@ updateMinTempInt1Reg: async () => {
       return;
     }
 
+    // Crea una instancia de Mongoose para asegurarte de que sea un documento Mongoose
+    const targetTempsDocument = new Vanguard(targetTempsEntry);
+
     // Actualiza directamente el valor de minTempInt1Reg
     console.log('Actualizando minTempInt1Reg a -9');
-    targetTempsEntry.minTempInt1Reg = -9;
+    targetTempsDocument.minTempInt1Reg = -9;
 
     // También actualiza la fecha si es necesario
-    targetTempsEntry.date = new Date();  // Puedes ajustar esto según tu lógica
+    targetTempsDocument.date = new Date();  // Puedes ajustar esto según tu lógica
 
     // Guarda el documento
-    await targetTempsEntry.save();
+    await targetTempsDocument.save();
 
     console.log('minTempInt1Reg actualizado correctamente.');
 
@@ -128,6 +131,7 @@ updateMinTempInt1Reg: async () => {
     console.error('Error al actualizar minTempInt1Reg:', error);
   }
 },
+
 
 
 
