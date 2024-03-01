@@ -99,7 +99,7 @@ const vanguardController = {
 
 
  
- updateMinTempInt1Reg: async () => {
+updateMinTempInt1Reg: async () => {
   try {
     // Encuentra el objeto con el id específico
     const targetTempsEntry = await Vanguard.findOne({ _id: '65e19f1ad57c4b0469da4d0a' });
@@ -112,12 +112,16 @@ const vanguardController = {
       return;
     }
 
+    // Actualiza directamente el valor de minTempInt1Reg
     console.log('Actualizando minTempInt1Reg a -9');
     targetTempsEntry.minTempInt1Reg = -9;
+
     // También actualiza la fecha si es necesario
     targetTempsEntry.date = new Date();  // Puedes ajustar esto según tu lógica
+
+    // Guarda el documento
     await targetTempsEntry.save();
-    
+
     console.log('minTempInt1Reg actualizado correctamente.');
 
   } catch (error) {
