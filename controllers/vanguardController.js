@@ -96,6 +96,35 @@ const vanguardController = {
 
     }
   },
+
+
+  updateMinTempInt1Reg: async (newTemperature) => {
+    try {
+      // Encuentra el objeto con el id específico
+      const targetTempsEntry = await Vanguard.findOne({ _id: '65e19f1ad57c4b0469da4d0a' });
+
+      // Maneja el caso en que no se encuentre el objeto
+      if (!targetTempsEntry) {
+        console.error('No se encontró el objeto con el id específico.');
+        return;
+      }
+
+      // Compara y actualiza si es necesario
+      if (newTemperature < targetTempsEntry.minTempInt1Reg) {
+        targetTempsEntry.minTempInt1Reg = newTemperature;
+        // También actualiza la fecha si es necesario
+        targetTempsEntry.date = new Date();  // Puedes ajustar esto según tu lógica
+        await targetTempsEntry.save();
+      }
+    } catch (error) {
+      console.error('Error al actualizar minTempInt1Reg:', error);
+    }
+  },
+
+
+
+
+
 }
 
 export default vanguardController;
