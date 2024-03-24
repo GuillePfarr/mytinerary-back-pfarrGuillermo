@@ -19,6 +19,7 @@ const vanguardSchema =   Schema({
     lowerLimit2: { type: Number },
     rainAmount: { type: Number },
     rainDuration: { type: Number },
+    errorStatus: { type: Number },
     date: { type: Date, required:true }
 },
 
