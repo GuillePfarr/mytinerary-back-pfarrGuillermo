@@ -49,11 +49,10 @@ const vanguardController = {
 
   //   }
   // },
-
 createOneVanguard: async (req, res, next) => {
   try {
-    // Obtener el ID del objeto padre
-    const { id } = req.body.parentId;
+    // Obtener el ID del objeto padre de los parámetros de la solicitud
+    const { id } = req.params;
     
     // Obtener el objeto padre
     const parentVanguard = await Vanguard.findById(id);
