@@ -34,50 +34,21 @@ const vanguardController = {
     }
   },
 
-  // createOneVanguard: async (req, res, next) => {
+  createOneVanguard: async (req, res, next) => {
 
-  //   try {
-  //     const vanguard = await Vanguard.create(req.body)
-  //     res.json({
-  //       response: vanguard,
-  //       success: true,
-  //       error: null
-  //     })
+    try {
+      const vanguard = await Vanguard.create(req.body)
+      res.json({
+        response: vanguard,
+        success: true,
+        error: null
+      })
 
-  //   } catch (error) {
-  //     console.log(error)
+    } catch (error) {
+      console.log(error)
 
-  //   }
-  // },
-createOneVanguard: async (req, res, next) => {
-  try {
-    // Obtener el ID del objeto padre de los parámetros de la solicitud
-    const { id } = req.params;
-    
-    // Obtener el objeto padre
-    const parentVanguard = await Vanguard.findById(id);
-
-    // Agregar el nuevo objeto al array dentro del objeto padre
-    parentVanguard.data.push(req.body);
-
-    // Guardar el objeto padre actualizado en la base de datos
-    const updatedParentVanguard = await parentVanguard.save();
-
-    res.json({
-      response: updatedParentVanguard,
-      success: true,
-      error: null
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      response: null,
-      success: false,
-      error: "Error al agregar un nuevo objeto al array dentro del objeto padre"
-    });
-  }
-},
-
+    }
+  },
 
 
 
