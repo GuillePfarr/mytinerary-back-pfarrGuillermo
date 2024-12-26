@@ -12,6 +12,6 @@ const parameterSchema =   Schema({
         timestamps: true
     }
 )
-const Parameter = model('parameter', parameterSchema)
+const Parameter = model('parameters', parameterSchema)
 
 export default Parameter;
