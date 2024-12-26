@@ -1,62 +1,83 @@
-import Parameter from "../models/parameterModel.js";
+import Parameter from '../config/Models/Parameter.js';
 
-// Obtener parámetros actuales
-export const getParameters = async (req, res) => {
-  try {
-    const parameters = await Parameter.findOne(); // Supone que solo existe un documento de parámetros
-    if (!parameters) {
-      return res.status(404).json({ message: "Parameters not found" });
+const parameterController = {
+  getAllParameter: async (request, response, next) => {
+    try {
+      const allParameter = await Parameter.find();
+
+      response.json({
+        response: allParameter,
+        success: true,
+        error: null
+      });
+    } catch (error) {
+      console.log(error);
     }
-    res.status(200).json(parameters);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching parameters", error });
+  },
+
+  getOneParameter: async (req, res, next) => {
+    try {
+      console.log(req.params);
+      const { id } = req.params;
+      const parameter = await Parameter.findById(id);
+      res.json({
+        response: parameter,
+        success: true,
+        error: null
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  createOneParameter: async (req, res, next) => {
+    try {
+      const parameter = await Parameter.create(req.body);
+      res.json({
+        response: parameter,
+        success: true,
+        error: null
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  updateOneParameter: async (req, res, next) => {
+    const { id } = req.params;
+    let error = null;
+    let success = true;
+    try {
+      const updatedParameter = await Parameter.findOneAndUpdate({ _id: id }, req.body, { new: true });
+      res.json({
+        response: updatedParameter,
+        success: true,
+        error: null
+      });
+    } catch (error) {
+      success = false;
+      error = err;
+      next(err);
+    }
+  },
+
+  deleteOneParameter: async (req, res, next) => {
+    const { id } = req.params;
+    let error = null;
+    let success = true;
+    try {
+      const deletedParameter = await Parameter.findOneAndDelete({ _id: id });
+      res.json({
+        response: deletedParameter,
+        success: true,
+        error: null
+      });
+    } catch (error) {
+      success = false;
+      error = err;
+      next(err);
+    }
   }
 };
 
-// Actualizar parámetros
-export const updateParameters = async (req, res) => {
-  const { tempMax, tempMin, humidityMax, humidityMin } = req.body;
-
-  try {
-    const parameters = await Parameter.findOne();
-    if (!parameters) {
-      return res.status(404).json({ message: "Parameters not found" });
-    }
-
-    // Actualizar los valores
-    parameters.tempMax = tempMax;
-    parameters.tempMin = tempMin;
-    parameters.humidityMax = humidityMax;
-    parameters.humidityMin = humidityMin;
-
-    // Guardar los cambios
-    const updatedParameters = await parameters.save();
-    res.status(200).json(updatedParameters);
-  } catch (error) {
-    res.status(500).json({ message: "Error updating parameters", error });
-  }
-};
-
-// Crear un conjunto inicial de parámetros (opcional)
-export const createParameters = async (req, res) => {
-  const { tempMax, tempMin, humidityMax, humidityMin } = req.body;
-
-  try {
-    const parametersExist = await Parameter.findOne();
-    if (parametersExist) {
-      return res.status(400).json({ message: "Parameters already exist" });
-    }
-
-    const newParameters = new Parameter({
-      tempMax,
-      tempMin,
-      humidityMax,
-      humidityMin,
-    });
-
-    const savedParameters = await newParameters.save();
-    res.status(201).json(savedParameters);
-  } catch (error) {
-    res.status(500).json({ message: "Error creating parameters", error });
-  }
-};
+export default parameterController;
