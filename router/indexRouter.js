@@ -7,6 +7,7 @@ import authRouter from './authRouter.js';
 import vanguardRouter from './vanguardRouter.js';
 import parameterRouter from './parameterRouter.js';
 
+
 const indexRouter = Router()
 const {getAllCities, getOneCitie} = citiesController
 
