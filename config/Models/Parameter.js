@@ -5,7 +5,7 @@ const parameterSchema =   Schema({
     tempMin: { type: Number, required:true },
     humidityMax: { type: Number, required:true},
     humidityMin: { type: Number, required:true }
-   
+    
 },
 
   {
