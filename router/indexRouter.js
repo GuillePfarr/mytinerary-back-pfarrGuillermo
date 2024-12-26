@@ -5,6 +5,7 @@ import citiesRouter from './citiesRouter.js';
 import itinerariesRouter from './itinerariesRouter.js';
 import authRouter from './authRouter.js';
 import vanguardRouter from './vanguardRouter.js';
+import parameterController from '../controllers/parameterController.js';
 import parameterRouter from './parameterRouter.js';
 
 
