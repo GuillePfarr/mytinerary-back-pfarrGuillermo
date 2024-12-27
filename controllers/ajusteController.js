@@ -1,12 +1,12 @@
-import Parameter from '../config/Models/Parameter.js';
+import Ajuste from '../config/Models/Ajuste.js';
 
-const parameterController = {
-  getAllParameter: async (request, response, next) => {
+const ajusteController = {
+  getAllAjuste: async (request, response, next) => {
     try {
-      const allParameter = await Parameter.find();
+      const allAjuste = await Ajuste.find();
 
       response.json({
-        response: allParameter,
+        response: allAjuste,
         success: true,
         error: null
       });
@@ -15,13 +15,13 @@ const parameterController = {
     }
   },
 
-  getOneParameter: async (req, res, next) => {
+  getOneAjuste: async (req, res, next) => {
     try {
       console.log(req.params);
       const { id } = req.params;
-      const parameter = await Parameter.findById(id);
+      const ajuste = await Ajuste.findById(id);
       res.json({
-        response: parameter,
+        response: ajuste,
         success: true,
         error: null
       });
@@ -30,11 +30,11 @@ const parameterController = {
     }
   },
 
-  createOneParameter: async (req, res, next) => {
+  createOneAjuste: async (req, res, next) => {
     try {
-      const parameter = await Parameter.create(req.body);
+      const ajuste = await Ajuste.create(req.body);
       res.json({
-        response: parameter,
+        response: ajuste,
         success: true,
         error: null
       });
@@ -43,14 +43,14 @@ const parameterController = {
     }
   },
 
-  updateOneParameter: async (req, res, next) => {
+  updateOneAjuste: async (req, res, next) => {
     const { id } = req.params;
     let error = null;
     let success = true;
     try {
-      const updatedParameter = await Parameter.findOneAndUpdate({ _id: id }, req.body, { new: true });
+      const updatedAjuste = await Ajuste.findOneAndUpdate({ _id: id }, req.body, { new: true });
       res.json({
-        response: updatedParameter,
+        response: updatedAjuste,
         success: true,
         error: null
       });
@@ -61,14 +61,14 @@ const parameterController = {
     }
   },
 
-  deleteOneParameter: async (req, res, next) => {
+  deleteOneAjuste: async (req, res, next) => {
     const { id } = req.params;
     let error = null;
     let success = true;
     try {
-      const deletedParameter = await Parameter.findOneAndDelete({ _id: id });
+      const deletedAjuste = await Ajuste.findOneAndDelete({ _id: id });
       res.json({
-        response: deletedParameter,
+        response: deletedAjuste,
         success: true,
         error: null
       });
@@ -80,4 +80,4 @@ const parameterController = {
   }
 };
 
-export default parameterController;
+export default ajusteController;
