@@ -9,4 +9,6 @@ ajusteRouter.get('/:id', getOneAjuste)
 ajusteRouter.put('/:id', updateOneAjuste)
 ajusteRouter.delete('/:id', deleteOneAjuste)
 
+
+
 export default ajusteRouter
