@@ -13,7 +13,7 @@ const ajusteSchema =   Schema({
 )
 const Ajuste = model('ajustes', ajusteSchema)
 
-export default Vanguard;
+export default Ajuste;
 
 
 
