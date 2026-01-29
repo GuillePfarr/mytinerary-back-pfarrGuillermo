@@ -29,6 +29,9 @@
 import mqtt from "mqtt";
 
 export function createMqttClient() {
+
+console.log("[MQTT] === BOOT mqtt.js v2 ===");
+
   const url = process.env.MQTT_URL;
 
   // Acepta ambos nombres (por si quedó algo viejo en Render)
