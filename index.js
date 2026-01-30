@@ -12,6 +12,32 @@
 // response.send('Bienvenido a mi servidor ')
 // })
 // server.listen(process.env['PORT'], ()=>{console.log('Servidor corriendo en puerto ' + process.env['PORT'])})
+// import "dotenv/config.js";
+// import express from "express";
+// import indexRouter from "./router/indexRouter.js";
+// import cors from "cors";
+// import "./config/database.js";
+// import { createMqttClient } from "./config/mqtt.js";
+
+// const server = express();
+
+// server.use(cors());
+// server.use(express.json());
+
+// // MQTT client disponible para routes/controllers
+// const mqttClient = createMqttClient();
+// server.set("mqttClient", mqttClient);
+
+// server.use("/api", indexRouter);
+
+// server.get("/", (request, response) => {
+//   response.send("Bienvenido a mi servidor ");
+// });
+
+// server.listen(process.env["PORT"], () => {
+//   console.log("Servidor corriendo en puerto " + process.env["PORT"]);
+// });
+
 import "dotenv/config.js";
 import express from "express";
 import indexRouter from "./router/indexRouter.js";
@@ -21,7 +47,17 @@ import { createMqttClient } from "./config/mqtt.js";
 
 const server = express();
 
-server.use(cors());
+// ⬇️ ACÁ está el cambio
+server.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://mytinerary-guille-pfarr.vercel.app",
+    ],
+    credentials: false,
+  })
+);
+
 server.use(express.json());
 
 // MQTT client disponible para routes/controllers
