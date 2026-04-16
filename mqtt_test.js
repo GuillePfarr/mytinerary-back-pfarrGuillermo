@@ -1,10 +1,13 @@
+import dotenv from "dotenv";
 import mqtt from "mqtt";
 
-const url = "mqtts://a0afdfe096bb4fd6b483725a3c548747.s1.eu.hivemq.cloud:8883";
+dotenv.config();
+
+const url = process.env.MQTT_URL;
 
 const client = mqtt.connect(url, {
-  username: "vanguard_backend",
-  password: "Vanguard60438",
+  username: process.env.MQTT_USER,
+  password: process.env.MQTT_PASS,
   reconnectPeriod: 0,
 });
 
