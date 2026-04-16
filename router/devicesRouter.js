@@ -19,9 +19,9 @@ devicesRouter.post(
 );
 
 devicesRouter.post(
-  "/:deviceId/relays/25",
+  "/:deviceId/relays/:relayId",
   passport.authenticate("jwt", { session: false }),
-  devicesController.setRelay25
+  devicesController.setRelay
 );
 
 export default devicesRouter;
