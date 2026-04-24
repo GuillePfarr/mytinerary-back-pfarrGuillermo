@@ -27,6 +27,11 @@ const deviceSchema = new mongoose.Schema(
       required: true,
     },
 
+    deviceTokenHash: {
+      type: String,
+      default: null,
+    },
+
     claimedAt: {
       type: Date,
       default: null,

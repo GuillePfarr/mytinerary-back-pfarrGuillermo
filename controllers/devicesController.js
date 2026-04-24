@@ -104,6 +104,18 @@ const devicesController = {
       const { deviceId } = req.params;
       const snapshot = req.body;
 
+      const authHeader = req.headers.authorization || "";
+      const token = authHeader.startsWith("Bearer ")
+        ? authHeader.slice(7)
+        : null;
+
+      if (!token) {
+        return res.status(401).json({
+          success: false,
+          error: "device token requerido",
+        });
+      }
+
       if (!deviceId || typeof deviceId !== "string") {
         return res.status(400).json({
           success: false,
@@ -131,6 +143,22 @@ const devicesController = {
         return res.status(404).json({
           success: false,
           error: "Device no provisionado",
+        });
+      }
+
+      if (!device.deviceTokenHash) {
+        return res.status(403).json({
+          success: false,
+          error: "Device sin token configurado",
+        });
+      }
+
+      const tokenOk = await bcrypt.compare(token, device.deviceTokenHash);
+
+      if (!tokenOk) {
+        return res.status(401).json({
+          success: false,
+          error: "device token inválido",
         });
       }
 
