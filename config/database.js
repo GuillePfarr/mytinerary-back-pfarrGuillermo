@@ -23,22 +23,4 @@ mongoose
 
 
 
-// import mongoose from "mongoose";
 
-// export default async function connectDB() {
-//   const uri =
-//     process.env.DATABASE_URL ||
-//     process.env.MONGO_URI ||
-//     process.env.MONGODB_URI;
-
-//   if (!uri) {
-//     throw new Error("Falta DATABASE_URL/MONGO_URI/MONGODB_URI en variables de entorno");
-//   }
-
-//   // log seguro (no muestra credenciales)
-//   const safe = uri.replace(/\/\/(.*?):(.*?)@/, "//(user):(pass)@");
-//   console.log("[DB] Using:", safe);
-
-//   await mongoose.connect(uri);
-//   console.log("Database connected");
-// }
