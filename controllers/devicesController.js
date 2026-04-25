@@ -100,92 +100,102 @@ const devicesController = {
   },
 
   receiveSnapshot: async (req, res) => {
-    try {
-      const { deviceId } = req.params;
-      const snapshot = req.body;
+  try {
+    const { deviceId } = req.params;
+    const snapshot = req.body;
 
-      const authHeader = req.headers.authorization || "";
-      const token = authHeader.startsWith("Bearer ")
-        ? authHeader.slice(7)
-        : null;
+    const authHeader = req.headers.authorization || "";
+    const token = authHeader.startsWith("Bearer ")
+      ? authHeader.slice(7)
+      : null;
 
-      if (!token) {
-        return res.status(401).json({
-          success: false,
-          error: "device token requerido",
-        });
-      }
-
-      if (!deviceId || typeof deviceId !== "string") {
-        return res.status(400).json({
-          success: false,
-          error: "deviceId requerido",
-        });
-      }
-
-      if (!snapshot || typeof snapshot !== "object") {
-        return res.status(400).json({
-          success: false,
-          error: "snapshot inválido",
-        });
-      }
-
-      if (snapshot.deviceId && snapshot.deviceId !== deviceId) {
-        return res.status(400).json({
-          success: false,
-          error: "deviceId del path no coincide con snapshot.deviceId",
-        });
-      }
-
-      const device = await Device.findOne({ deviceId });
-
-      if (!device) {
-        return res.status(404).json({
-          success: false,
-          error: "Device no provisionado",
-        });
-      }
-
-      if (!device.deviceTokenHash) {
-        return res.status(403).json({
-          success: false,
-          error: "Device sin token configurado",
-        });
-      }
-
-      const tokenOk = await bcrypt.compare(token, device.deviceTokenHash);
-
-      if (!tokenOk) {
-        return res.status(401).json({
-          success: false,
-          error: "device token inválido",
-        });
-      }
-
-      device.lastSnapshot = snapshot;
-      device.lastSeen = new Date();
-      device.online = true;
-
-      if (snapshot.model) device.model = snapshot.model;
-      if (snapshot.firmwareVersion) device.firmwareVersion = snapshot.firmwareVersion;
-      if (snapshot.hardwareVersion) device.hardwareVersion = snapshot.hardwareVersion;
-      if (snapshot.timezone) device.timezone = snapshot.timezone;
-
-      await device.save();
-
-      return res.status(200).json({
-        success: true,
-        deviceId,
-        lastSeen: device.lastSeen,
-      });
-    } catch (error) {
-      console.error("[DEVICE] receiveSnapshot error:", error);
-      return res.status(500).json({
+    if (!token) {
+      return res.status(401).json({
         success: false,
-        error: "Error interno",
+        error: "device token requerido",
       });
     }
-  },
+
+    if (!deviceId || typeof deviceId !== "string") {
+      return res.status(400).json({
+        success: false,
+        error: "deviceId requerido",
+      });
+    }
+
+    if (!snapshot || typeof snapshot !== "object") {
+      return res.status(400).json({
+        success: false,
+        error: "snapshot inválido",
+      });
+    }
+
+    if (snapshot.deviceId && snapshot.deviceId !== deviceId) {
+      return res.status(400).json({
+        success: false,
+        error: "deviceId del path no coincide con snapshot.deviceId",
+      });
+    }
+
+    const device = await Device.findOne({ deviceId }).select(
+      "deviceId deviceTokenHash"
+    );
+
+    if (!device) {
+      return res.status(404).json({
+        success: false,
+        error: "Device no provisionado",
+      });
+    }
+
+    if (!device.deviceTokenHash) {
+      return res.status(403).json({
+        success: false,
+        error: "Device sin token configurado",
+      });
+    }
+
+    const tokenOk = await bcrypt.compare(token, device.deviceTokenHash);
+
+    if (!tokenOk) {
+      return res.status(401).json({
+        success: false,
+        error: "device token inválido",
+      });
+    }
+
+    const now = new Date();
+
+    const update = {
+      lastSnapshot: snapshot,
+      lastSeen: now,
+      online: true,
+    };
+
+    if (snapshot.model) update.model = snapshot.model;
+    if (snapshot.firmwareVersion) update.firmwareVersion = snapshot.firmwareVersion;
+    if (snapshot.hardwareVersion) update.hardwareVersion = snapshot.hardwareVersion;
+    if (snapshot.timezone) update.timezone = snapshot.timezone;
+
+    await Device.updateOne(
+      { deviceId },
+      { $set: update },
+      { runValidators: false }
+    );
+
+    return res.status(200).json({
+      success: true,
+      deviceId,
+      lastSeen: now,
+    });
+  } catch (error) {
+    console.error("[DEVICE] receiveSnapshot error:", error);
+    return res.status(500).json({
+      success: false,
+      error: "Error interno",
+    });
+  }
+},
 };
 
 export default devicesController;
