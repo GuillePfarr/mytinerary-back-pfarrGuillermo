@@ -5,6 +5,8 @@ import {
   signInToken,
   verifyEmail,
   resendVerificationCode,
+  requestPasswordReset,
+  resetPassword,
 } from "../controllers/authController.js";
 import { signUpValidator } from "../config/Middlewares/signUpValidator.js";
 import passport from "../config/Middlewares/passport.js";
@@ -19,6 +21,18 @@ authRouter.post(
   "/resend-verification",
   authRateLimiter,
   resendVerificationCode
+);
+
+authRouter.post(
+  "/request-password-reset",
+  authRateLimiter,
+  requestPasswordReset
+);
+
+authRouter.post(
+  "/reset-password",
+  authRateLimiter,
+  resetPassword
 );
 
 authRouter.post(

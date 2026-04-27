@@ -8,7 +8,9 @@ import {
   getVerificationExpirationDate,
   hashVerificationCode,
   isEmailVerificationEnabled,
+  getPasswordResetExpirationDate,
 } from "../config/services/verificationService.js";
+import { sendPasswordResetEmail } from "../config/services/emailService.js";
 
 const buildUserResponse = (user) => ({
   email: user.email,
@@ -247,6 +249,130 @@ export const resendVerificationCode = async (req, res) => {
     });
   }
 }; 
+
+export const requestPasswordReset = async (req, res) => {
+  try {
+    let { email } = req.body;
+
+    email = String(email || "").trim().toLowerCase();
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        error: "Email requerido",
+      });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(200).json({
+        success: true,
+        message:
+          "Si el email existe, enviaremos un código para restablecer la contraseña.",
+      });
+    }
+
+    const code = generateVerificationCode();
+
+    user.passwordResetCodeHash = await hashVerificationCode(code);
+    user.passwordResetExpires = getPasswordResetExpirationDate();
+
+    await user.save();
+
+    await sendPasswordResetEmail({ to: email, code });
+
+    return res.status(200).json({
+      success: true,
+      message:
+        "Si el email existe, enviaremos un código para restablecer la contraseña.",
+    });
+  } catch (error) {
+    console.error("[AUTH] requestPasswordReset error:", error);
+
+    return res.status(500).json({
+      success: false,
+      error: "Error interno",
+    });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    let { email, code, password } = req.body;
+
+    email = String(email || "").trim().toLowerCase();
+    code = String(code || "").trim();
+    password = String(password || "");
+
+    if (!email || !code || !password) {
+      return res.status(400).json({
+        success: false,
+        error: "Email, código y nueva contraseña son requeridos",
+      });
+    }
+
+    if (password.length < 8) {
+      return res.status(400).json({
+        success: false,
+        error: "La contraseña debe tener al menos 8 caracteres",
+      });
+    }
+
+    const user = await User.findOne({ email }).select("+passwordResetCodeHash");
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        error: "Código inválido o expirado",
+      });
+    }
+
+    if (!user.passwordResetCodeHash || !user.passwordResetExpires) {
+      return res.status(400).json({
+        success: false,
+        error: "Código inválido o expirado",
+      });
+    }
+
+    if (user.passwordResetExpires < new Date()) {
+      return res.status(400).json({
+        success: false,
+        error: "Código inválido o expirado",
+      });
+    }
+
+    const validCode = await compareVerificationCode(
+      code,
+      user.passwordResetCodeHash
+    );
+
+    if (!validCode) {
+      return res.status(400).json({
+        success: false,
+        error: "Código inválido o expirado",
+      });
+    }
+
+    user.password = await bcrypt.hash(password, 10);
+    user.passwordResetCodeHash = null;
+    user.passwordResetExpires = null;
+
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Contraseña actualizada correctamente",
+    });
+  } catch (error) {
+    console.error("[AUTH] resetPassword error:", error);
+
+    return res.status(500).json({
+      success: false,
+      error: "Error interno",
+    });
+  }
+};
 
 
 export const signIn = async (req, res) => {

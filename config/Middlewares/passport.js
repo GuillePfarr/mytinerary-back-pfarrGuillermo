@@ -3,25 +3,28 @@ import { Strategy, ExtractJwt } from "passport-jwt";
 import User from "../Models/User.js";
 
 const options = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: "Aldi$Berliner*"
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.JWT_SECRET,
+};
 
-}
-const fn = async (jwt_payload, done) => {
-    try {
-        const user = await User.findOne({ email: jwt_payload.email })
-
-        if (!user) {
-            done(null, false)
-
-        }
-console.log(user)
-        done(null, user)
-    } catch (err) {
-        next(err, false)
+const verifyJwt = async (jwtPayload, done) => {
+  try {
+    if (!jwtPayload?.sub) {
+      return done(null, false);
     }
-}
 
+    const user = await User.findById(jwtPayload.sub).select("-password");
 
+    if (!user) {
+      return done(null, false);
+    }
 
-  export default passport.use(new Strategy(options, fn))
+    return done(null, user);
+  } catch (error) {
+    return done(error, false);
+  }
+};
+
+passport.use(new Strategy(options, verifyJwt));
+
+export default passport;
