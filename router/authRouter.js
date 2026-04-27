@@ -1,11 +1,30 @@
 import { Router } from "express";
-import { signIn, signUp, signInToken} from "../controllers/authController.js"
-import { signUpValidator} from "../config/Middlewares/signUpValidator.js"
+import {
+  signIn,
+  signUp,
+  signInToken,
+  verifyEmail,
+  resendVerificationCode,
+} from "../controllers/authController.js";
+import { signUpValidator } from "../config/Middlewares/signUpValidator.js";
 import passport from "../config/Middlewares/passport.js";
-const authRouter = Router ()
+import { authRateLimiter } from "../config/Middlewares/authRateLimiter.js";
 
-authRouter.post( "/signIn", signIn)
-authRouter.post( "/signUp", signUpValidator, signUp)
-authRouter.post("/signin/token", passport.authenticate('jwt', {session:false}), signInToken )
+const authRouter = Router();
 
-export default authRouter
+authRouter.post("/signIn", authRateLimiter, signIn);
+authRouter.post("/signUp", authRateLimiter, signUpValidator, signUp);
+authRouter.post("/verify-email", authRateLimiter, verifyEmail);
+authRouter.post(
+  "/resend-verification",
+  authRateLimiter,
+  resendVerificationCode
+);
+
+authRouter.post(
+  "/signin/token",
+  passport.authenticate("jwt", { session: false }),
+  signInToken
+);
+
+export default authRouter;
