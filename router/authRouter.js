@@ -8,9 +8,10 @@ import {
   requestPasswordReset,
   resetPassword,
 } from "../controllers/authController.js";
+
 import { signUpValidator } from "../config/Middlewares/signUpValidator.js";
-import passport from "../config/Middlewares/passport.js";
 import { authRateLimiter } from "../config/Middlewares/authRateLimiter.js";
+import { requireAuth } from "../config/Middlewares/requireAuth.js";
 
 const authRouter = Router();
 
@@ -20,25 +21,17 @@ authRouter.post("/verify-email", authRateLimiter, verifyEmail);
 authRouter.post(
   "/resend-verification",
   authRateLimiter,
-  resendVerificationCode
+  resendVerificationCode,
 );
 
 authRouter.post(
   "/request-password-reset",
   authRateLimiter,
-  requestPasswordReset
+  requestPasswordReset,
 );
 
-authRouter.post(
-  "/reset-password",
-  authRateLimiter,
-  resetPassword
-);
+authRouter.post("/reset-password", authRateLimiter, resetPassword);
 
-authRouter.post(
-  "/signin/token",
-  passport.authenticate("jwt", { session: false }),
-  signInToken
-);
+authRouter.post("/signin/token", requireAuth, signInToken);
 
 export default authRouter;
