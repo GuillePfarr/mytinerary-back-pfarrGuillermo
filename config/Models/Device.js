@@ -81,12 +81,22 @@ const deviceSchema = new mongoose.Schema(
       default: null,
     },
 
+    lastHeartbeatAt: {
+      type: Date,
+      default: null,
+    },
+
+    lastHeartbeat: {
+      type: Object,
+      default: null,
+    },
+     
     lastSnapshot: {
       type: Object,
       default: null,
-    }
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Device = mongoose.model("device", deviceSchema);

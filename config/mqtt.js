@@ -1,4 +1,3 @@
-
 // import mqtt from "mqtt";
 // import Device from "./Models/Device.js";
 
@@ -24,7 +23,6 @@
 //     password,
 //   });
 
-
 //   return client;
 // }
 
@@ -46,6 +44,21 @@ function parseRelayStateTopic(topic) {
   if (!deviceId || !relayId) return null;
 
   return { deviceId, relayId };
+}
+
+function parseHeartbeatTopic(topic) {
+  // Esperado: devices/<deviceId>/heartbeat
+  const parts = topic.split("/");
+
+  if (parts.length !== 3) return null;
+  if (parts[0] !== "devices") return null;
+  if (parts[2] !== "heartbeat") return null;
+
+  const deviceId = parts[1];
+
+  if (!deviceId) return null;
+
+  return { deviceId };
 }
 
 export function createMqttClient() {
@@ -72,14 +85,16 @@ export function createMqttClient() {
     console.log("[MQTT] ✅ conectado");
 
     const stateTopic = "devices/+/relays/+/state";
+    const heartbeatTopic = "devices/+/heartbeat";
 
-    client.subscribe(stateTopic, { qos: 1 }, (err) => {
+    client.subscribe([stateTopic, heartbeatTopic], { qos: 1 }, (err) => {
       if (err) {
-        console.error("[MQTT] ❌ error al suscribirse a topic de estado:", err.message);
+        console.error("[MQTT] ❌ error al suscribirse:", err.message);
         return;
       }
 
       console.log(`[MQTT] 👂 suscripto a ${stateTopic}`);
+      console.log(`[MQTT] 👂 suscripto a ${heartbeatTopic}`);
     });
   });
 
@@ -93,15 +108,57 @@ export function createMqttClient() {
 
   client.on("message", async (topic, payloadBuffer) => {
     try {
-      const payload = payloadBuffer.toString().trim().toUpperCase();
+      const rawPayload = payloadBuffer.toString().trim();
 
-      console.log(`[MQTT] mensaje recibido topic=${topic} payload=${payload}`);
+      console.log(
+        `[MQTT] mensaje recibido topic=${topic} payload=${rawPayload}`,
+      );
+
+      const heartbeat = parseHeartbeatTopic(topic);
+
+      if (heartbeat) {
+        const { deviceId } = heartbeat;
+
+        let heartbeatPayload = {};
+
+        if (rawPayload) {
+          try {
+            heartbeatPayload = JSON.parse(rawPayload);
+          } catch {
+            heartbeatPayload = { raw: rawPayload };
+          }
+        }
+
+        const now = new Date();
+
+        const updateResult = await Device.updateOne(
+          { deviceId },
+          {
+            $set: {
+              lastHeartbeatAt: now,
+              lastHeartbeat: heartbeatPayload,
+              online: true,
+            },
+          },
+        );
+
+        if (updateResult.matchedCount === 0) {
+          console.warn(
+            `[MQTT] heartbeat de device no encontrado en DB: ${deviceId}`,
+          );
+          return;
+        }
+
+        console.log(`[MQTT] ✅ heartbeat persistido deviceId=${deviceId}`);
+        return;
+      }
+
+      const payload = rawPayload.toUpperCase();
 
       if (payload !== "ON" && payload !== "OFF") {
         console.warn(`[MQTT] payload ignorado por inválido: ${payload}`);
         return;
       }
-
       const parsed = parseRelayStateTopic(topic);
       if (!parsed) {
         console.warn(`[MQTT] topic ignorado por formato no esperado: ${topic}`);
@@ -117,7 +174,7 @@ export function createMqttClient() {
             [`relayStates.${relayId}`]: payload,
             lastSeenAt: new Date(),
           },
-        }
+        },
       );
 
       if (updateResult.matchedCount === 0) {
@@ -126,7 +183,7 @@ export function createMqttClient() {
       }
 
       console.log(
-        `[MQTT] ✅ estado persistido deviceId=${deviceId} relay=${relayId} state=${payload}`
+        `[MQTT] ✅ estado persistido deviceId=${deviceId} relay=${relayId} state=${payload}`,
       );
     } catch (error) {
       console.error("[MQTT] ❌ error procesando mensaje:", error.message);
