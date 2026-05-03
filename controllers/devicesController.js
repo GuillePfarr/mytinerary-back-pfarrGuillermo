@@ -43,7 +43,7 @@ const devicesController = {
     }
   },
 
-  claimDevice: async (req, res) => {
+claimDevice: async (req, res) => {
     try {
       const { deviceId, claimCode, name } = req.body;
 
@@ -77,6 +77,17 @@ const devicesController = {
         });
       }
 
+      const ownedDevicesCount = await Device.countDocuments({
+        owner: req.user._id,
+      });
+
+      if (ownedDevicesCount >= 4) {
+        return res.status(403).json({
+          success: false,
+          error: "Limite de devices alcanzado. Maximo permitido: 4",
+        });
+      }
+
       const ok = await bcrypt.compare(claimCode, device.claimCodeHash);
 
       if (!ok) {
@@ -105,7 +116,6 @@ const devicesController = {
       });
     }
   },
-
   setRelay: async (req, res) => {
     try {
       const { deviceId, relayId } = req.params;
